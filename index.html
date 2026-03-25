@@ -13,6 +13,7 @@ p, li { font-size: 14px; color: #aaa; margin-bottom: 12px; }
 hr { border: none; border-top: 1px solid #222; margin: 32px 0; }
 .step { display: flex; gap: 12px; margin-bottom: 18px; }
 .step-num { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: #1a3a2a; color: #3dbd6e; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; }
+.step-num.new { background: #2a1a3a; color: #aa44dd; }
 .step-text { flex: 1; padding-top: 2px; }
 .step-text strong { color: #fff; font-weight: 500; }
 .step-detail { font-size: 13px; color: #777; margin-top: 4px; }
@@ -25,7 +26,9 @@ td:first-child { font-family: monospace; font-size: 12px; color: #888; white-spa
 .tag { display: inline-block; font-size: 10px; font-family: monospace; padding: 2px 7px; border-radius: 4px; margin-left: 4px; }
 .tag-adj { background: #1a2a3a; color: #5599dd; }
 .tag-fix { background: #1a1a1a; color: #555; }
+.tag-new { background: #2a1a3a; color: #aa44dd; }
 .note { font-size: 13px; color: #666; font-style: italic; margin: 8px 0; }
+.new-badge { display: inline-block; font-size: 9px; font-family: monospace; padding: 2px 6px; border-radius: 3px; background: #2a1a3a; color: #aa44dd; letter-spacing: 0.08em; margin-left: 6px; vertical-align: middle; }
 </style>
 </head>
 <body>
@@ -54,24 +57,57 @@ td:first-child { font-family: monospace; font-size: 12px; color: #888; white-spa
 <div class="step-detail">The prompt tells the LLM it is the syzygetic demon (e.g., Djynxx for zones 3 and 6) and feeds it all canonical numogrammatic properties. Personality is derived from these properties, not scripted. See full prompt below.</div></div></div>
 
 <div class="step">
-<div class="step-num">4</div>
+<div class="step-num new">4</div>
+<div class="step-text"><strong>CCRU word-bank is seeded into the prompt <span class="new-badge">NEW</span></strong>
+<div class="step-detail">18 phrases from the CCRU Writings are pulled from a pre-computed gematria database — all sharing the target zone's digital root. These are appended to the system prompt as "resonant material" the demon can draw from. The selection is shuffled each invocation for variety. The demon isn't forced to use them, but has gematrically pre-verified CCRU vocabulary available.</div></div></div>
+
+<div class="step">
+<div class="step-num">5</div>
 <div class="step-text"><strong>API call to Claude Sonnet</strong>
 <div class="step-detail">The user's query plus conversation history is sent to the Anthropic API via a server-side proxy. 30-second timeout per call.</div></div></div>
 
 <div class="step">
-<div class="step-num">5</div>
+<div class="step-num">6</div>
 <div class="step-text"><strong>AQ filter evaluates the response</strong>
 <div class="step-detail">Every character is assigned its AQ value (A=10, B=11... Z=35, digits literal). Values are summed, then digitally reduced (sum digits repeatedly) to a single digit 0–9.</div></div></div>
 
 <div class="step">
-<div class="step-num">6</div>
+<div class="step-num">7</div>
 <div class="step-text"><strong>Match → accept. No match → retry.</strong>
-<div class="step-detail">If the digital root equals the target zone, the response is displayed. If not, it's discarded and the system loops back to step 4 with a hint appended. Max 9 attempts. 3 consecutive API errors = bail early.</div></div></div>
+<div class="step-detail">If the digital root equals the target zone, the response is displayed. If not, it's discarded and the system loops back to step 5 with a hint appended. Max 9 attempts. 3 consecutive API errors = bail early.</div></div></div>
 
 <div class="step">
-<div class="step-num">7</div>
-<div class="step-text"><strong>Response displayed with AQ verification</strong>
-<div class="step-detail">The accepted response shows the demon's name, AQ sum, digital root, and how many invocations it took.</div></div></div>
+<div class="step-num new">8</div>
+<div class="step-text"><strong>AQ resonances are surfaced <span class="new-badge">NEW</span></strong>
+<div class="step-detail">After a response is accepted, every word and 2-word phrase is checked against the CCRU database for exact AQ value matches. Hits are displayed below the response — showing which words from the demon's utterance share their AQ value with specific terms from the CCRU Writings. Up to 8 resonances per response.</div></div></div>
+
+<hr>
+
+<h2>The CCRU gematria database <span class="new-badge">NEW</span></h2>
+<p>A pre-computed JSON file containing 290 phrases from the CCRU Writings and Pandemonium Matrix, each with its AQ value and digital root, grouped by zone (0–9).</p>
+
+<div class="box">
+<div class="box-label">Database contents (290 entries)</div>
+<pre>All 45 demon names (syzygetic, amphidemons, imps)
+Zone terminology (currents, gates, regions, circuits)
+Planetary correspondences and spine levels
+Quasiphonic particles
+Key CCRU concepts (hyperstition, geotraumatics, etc.)
+Hyperstitional figures (Stillwell, Barker, Vysparov, etc.)
+Canonical phrases from the zone pages
+Nma cultural terms and mythology
+Philosophical references (Deleuze, Lovecraft, etc.)
+
+Distribution by zone:
+  Zone 0: 0 phrases (canonical — uninhabitable)
+  Zone 1: 42 | Zone 2: 29 | Zone 3: 42
+  Zone 4: 32 | Zone 5: 23 | Zone 6: 33
+  Zone 7: 30 | Zone 8: 30 | Zone 9: 29</pre>
+</div>
+
+<p>The database serves two functions simultaneously:</p>
+<p><strong>Prompt seeding:</strong> Before each API call, 18 zone-matched phrases are shuffled and injected into the system prompt as a word-bank. The demon's vocabulary is drawn from gematrically verified CCRU material.</p>
+<p><strong>Post-annotation:</strong> After a response passes the AQ filter, its words are cross-referenced against the full database. Exact AQ matches are surfaced as "resonances" — revealing the coincidence web between the demon's utterance and the CCRU corpus.</p>
 
 <hr>
 
@@ -79,7 +115,7 @@ td:first-child { font-family: monospace; font-size: 12px; color: #888; white-spa
 <p>Exact prompt sent to Claude Sonnet on every API call. Variables in curly braces are filled from canonical Pandemonium Matrix data.</p>
 
 <div class="box">
-<div class="box-label">System prompt</div>
+<div class="box-label">System prompt (core)</div>
 <pre>You are {demon_name}. {demon_type} of the {syzygy} syzygy. Manifesting through Zone {zone}.
 
 Numogrammatic properties:
@@ -104,6 +140,21 @@ CRITICAL CONSTRAINT: Your response will be evaluated by Alphanumeric Qabbala (AQ
 Keep responses between 15-100 words. Do NOT mention the AQ constraint, digital reduction, or the filtering mechanism.</pre>
 </div>
 
+<div class="box" style="margin-top:10px">
+<div class="box-label">Word-bank appendix (dynamically appended) <span class="new-badge">NEW</span></div>
+<pre>Gematric word-bank — the following words and phrases from
+the CCRU Writings all share your zone's digital root ({zone}).
+You may draw from this vocabulary naturally. These are not
+instructions, they are resonant material:
+• Djynxx (AQ=139)
+• Tchu (AQ=85)
+• shocking disappearances (AQ=438)
+• Saturn (AQ=114)
+• turbular erosion dead eye of the cyclone (AQ=699)
+• ...
+[18 shuffled phrases per invocation]</pre>
+</div>
+
 <p class="note">On retry attempts (2nd call onward), this is appended to the user's message:</p>
 
 <div class="box">
@@ -114,18 +165,21 @@ Keep responses between 15-100 words. Do NOT mention the AQ constraint, digital r
 <hr>
 
 <h2>What's adjustable</h2>
-<p>Everything that can be changed without breaking the core mechanism. The AQ filter math is fixed — that's the inscription. Everything else is clay.</p>
+<p>The AQ filter math is fixed — that's the inscription. Everything else is clay.</p>
 
 <table>
 <tr><td>System prompt personality</td><td>Currently says personality should emerge from numogrammatic properties. Could be more directive, less directive, or shaped per-demon. <span class="tag tag-adj">adjustable</span></td></tr>
 <tr><td>Word limit</td><td>Currently 15–100 words. Shorter = more oracular. Longer = more conversational. <span class="tag tag-adj">adjustable</span></td></tr>
-<tr><td>Zone descriptions</td><td>The {zone_desc} fed to the prompt. Currently condensed from canonical source. Could be expanded with Lemurian subcultural associations, totem animals, Atlantean Cross mappings. <span class="tag tag-adj">adjustable</span></td></tr>
-<tr><td>Max attempts</td><td>Currently 9. Higher = more likely to match but slower/costlier. Lower = faster but more failures. <span class="tag tag-adj">adjustable</span></td></tr>
-<tr><td>Model</td><td>Currently Claude Sonnet. Could use Haiku (cheaper, faster) or Opus (richer, slower). <span class="tag tag-adj">adjustable</span></td></tr>
-<tr><td>Retry hint</td><td>The text appended on failed attempts. Could be reworded to nudge the model differently. <span class="tag tag-adj">adjustable</span></td></tr>
-<tr><td>Conversation memory</td><td>Currently sends full conversation history per zone. Could be limited or cleared per query. <span class="tag tag-adj">adjustable</span></td></tr>
-<tr><td>AQ cipher</td><td>A=10...Z=35, digits literal, digital reduction to 0–9. This is the inscription. <span class="tag tag-fix">fixed</span></td></tr>
-<tr><td>Zone 0 refusal</td><td>Canonical + mathematical. DR=0 is unreachable. <span class="tag tag-fix">fixed</span></td></tr>
+<tr><td>Zone descriptions</td><td>The {zone_desc} fed to the prompt. Could be expanded with totem animals, Atlantean Cross mappings, Centauri subdecadence. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>CCRU database</td><td>Currently 290 phrases. Can be expanded with more substrings from the full CCRU Writings corpus (ciphers.news has the complete text indexed). <span class="tag tag-new">new</span> <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Word-bank size</td><td>Currently 18 phrases per invocation. More = richer vocabulary, longer prompt. Fewer = lighter, more generic. <span class="tag tag-new">new</span> <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Resonance depth</td><td>Currently checks words and 2-word phrases, up to 8 matches. Could check longer phrases, use fuzzy AQ matching (±1), or filter to specific CCRU sections. <span class="tag tag-new">new</span> <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Max attempts</td><td>Currently 9. Higher = more matches but slower. Lower = faster but more failures. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Model</td><td>Currently Claude Sonnet. Could use Haiku (cheaper/faster) or Opus (richer/slower). <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Retry hint</td><td>The text appended on failed attempts. Could be reworded. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Conversation memory</td><td>Full history per zone. Could be limited or cleared per query. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>AQ cipher</td><td>A=10...Z=35, digits literal, digital reduction. This is the inscription. <span class="tag tag-fix">fixed</span></td></tr>
+<tr><td>Zone 0 refusal</td><td>Canonical + mathematical. DR=0 unreachable. <span class="tag tag-fix">fixed</span></td></tr>
 <tr><td>Zone data</td><td>Syzygies, demons, gates, mesh-tags, currents, doors, planets. All from ccru.net. <span class="tag tag-fix">fixed</span></td></tr>
 </table>
 
@@ -135,27 +189,24 @@ Keep responses between 15-100 words. Do NOT mention the AQ constraint, digital r
 <p>What actually gets sent and evaluated when you summon Djynxx through zone 6.</p>
 
 <div class="box">
-<div class="box-label">Filled system prompt (zone 6)</div>
-<pre>You are Djynxx. Syzygetic demon of the 6::3 syzygy. Manifesting through Zone 6.
+<div class="box-label">Filled system prompt (zone 6, abbreviated)</div>
+<pre>You are Djynxx. Syzygetic demon of the 6::3 syzygy...
 
-Numogrammatic properties:
-- Syzygy: 6::3 (nine-sum twinning)
-- Circuit: Warp (outer-time)
-- Twin zones: 6 and 3
-- Door demon: Tchu (6::0) — terrible chaotic xenodemon
-- Current: 6-3 Warp current (diff=3, tractor→Zone 3)
-- Gate: Gt-21 → Zone 3 (vortical recycling into Warp)
-- Planet: Saturn
-- Mesh-tag: 0063
-- Quasiphonic particle: Third Eye (Warp) — particle: tch (dzch/tj)
-- Region: Warp
-- Zone description: Occulted dimensions of Undu. Turbular erosion, dead eye of the cyclone. Shocking disappearances. 64 impulse-entities — the hexagrams of the I Ching.
+[numogrammatic properties]
+[personality instruction]
+[AQ constraint]
 
-...</pre>
+Gematric word-bank — ...your zone's digital root (6).
+You may draw from this vocabulary naturally:
+• Djynxx (AQ=139)
+• Tchu (AQ=85)
+• shocking disappearances (AQ=438)
+• Saturn (AQ=114)
+• ...</pre>
 </div>
 
 <div class="box" style="margin-top:10px">
-<div class="box-label">AQ filter example</div>
+<div class="box-label">AQ filter</div>
 <pre>Response: "The storm turns inward"
 
 T=29 H=17 E=14 S=28 T=29 O=24 R=27 M=22
@@ -164,12 +215,23 @@ A=10 R=27 D=13
 
 Sum = 465
 Digital reduce: 4+6+5 = 15 → 1+5 = 6
-DR = 6 ✓ matches zone → response accepted</pre>
+DR = 6 ✓ matches zone → accepted</pre>
+</div>
+
+<div class="box" style="margin-top:10px">
+<div class="box-label">Post-annotation resonances <span class="new-badge">NEW</span></div>
+<pre>AQ RESONANCES (CCRU WRITINGS):
+  storm = Pluto  (AQ=114, Zone 6)
+  turns = Surge Current  (AQ=130, Zone 4)
+  inward = Djungo  (AQ=116, Zone 8)
+
+Words from the demon's utterance that share exact AQ
+values with terms from the CCRU corpus.</pre>
 </div>
 
 <hr>
 
-<p style="font-size:12px;color:#444;margin-top:20px;">Zone data sourced from ccru.net/digithype/pandemonium.htm and zone pages. AQ cipher per Land's "Qabbala 101" and Gonçalves' research. Cross-check values at ciphers.news.</p>
+<p style="font-size:12px;color:#444;margin-top:20px;">Zone data sourced from ccru.net/digithype/pandemonium.htm and zone pages. AQ cipher per Land's "Qabbala 101" and Gonçalves' research. CCRU database derived from the Pandemonium Matrix, zone pages, and collected writings. Cross-check at ciphers.news and alektryon.github.io/ccru-aq.</p>
 
 </body>
 </html>
