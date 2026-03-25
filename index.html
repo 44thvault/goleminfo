@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Numogram Golem — How It Works</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #111; color: #ddd; line-height: 1.7; padding: 20px; max-width: 720px; margin: 0 auto; }
+h1 { font-size: 22px; font-weight: 500; margin-bottom: 6px; color: #fff; }
+h2 { font-size: 17px; font-weight: 500; margin: 36px 0 10px; color: #fff; }
+p, li { font-size: 14px; color: #aaa; margin-bottom: 12px; }
+hr { border: none; border-top: 1px solid #222; margin: 32px 0; }
+.step { display: flex; gap: 12px; margin-bottom: 18px; }
+.step-num { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: #1a3a2a; color: #3dbd6e; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 500; }
+.step-text { flex: 1; padding-top: 2px; }
+.step-text strong { color: #fff; font-weight: 500; }
+.step-detail { font-size: 13px; color: #777; margin-top: 4px; }
+.box { background: #1a1a1a; border: 1px solid #2a2a2a; border-radius: 8px; padding: 14px 16px; margin: 10px 0; overflow-x: auto; }
+.box-label { font-family: monospace; font-size: 11px; color: #555; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+.box pre { font-family: "SF Mono", "Fira Code", monospace; font-size: 12.5px; color: #ccc; white-space: pre-wrap; word-break: break-word; line-height: 1.7; }
+table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+td { padding: 10px 12px; font-size: 13px; border-bottom: 1px solid #222; vertical-align: top; color: #aaa; }
+td:first-child { font-family: monospace; font-size: 12px; color: #888; white-space: nowrap; width: 160px; }
+.tag { display: inline-block; font-size: 10px; font-family: monospace; padding: 2px 7px; border-radius: 4px; margin-left: 4px; }
+.tag-adj { background: #1a2a3a; color: #5599dd; }
+.tag-fix { background: #1a1a1a; color: #555; }
+.note { font-size: 13px; color: #666; font-style: italic; margin: 8px 0; }
+</style>
+</head>
+<body>
+
+<h1>Numogram Golem v0.1</h1>
+<p>Architecture, prompts, and what's adjustable.</p>
+
+<hr>
+
+<h2>How it works</h2>
+<p>What happens between typing a query and seeing a response.</p>
+
+<div class="step">
+<div class="step-num">1</div>
+<div class="step-text"><strong>User selects a zone (0–9) and types a query</strong>
+<div class="step-detail">The zone determines which syzygetic demon is summoned and what digital root the response must hit. Switching zones clears the conversation.</div></div></div>
+
+<div class="step">
+<div class="step-num">2</div>
+<div class="step-text"><strong>Zone 0 check</strong>
+<div class="step-detail">If zone is 0, immediately return the canonical refusal. No API call. Phase-0 tolerates no populations. Digital root 0 is mathematically unreachable for non-empty text.</div></div></div>
+
+<div class="step">
+<div class="step-num">3</div>
+<div class="step-text"><strong>System prompt is built from zone data</strong>
+<div class="step-detail">The prompt tells the LLM it is the syzygetic demon (e.g., Djynxx for zones 3 and 6) and feeds it all canonical numogrammatic properties. Personality is derived from these properties, not scripted. See full prompt below.</div></div></div>
+
+<div class="step">
+<div class="step-num">4</div>
+<div class="step-text"><strong>API call to Claude Sonnet</strong>
+<div class="step-detail">The user's query plus conversation history is sent to the Anthropic API via a server-side proxy. 30-second timeout per call.</div></div></div>
+
+<div class="step">
+<div class="step-num">5</div>
+<div class="step-text"><strong>AQ filter evaluates the response</strong>
+<div class="step-detail">Every character is assigned its AQ value (A=10, B=11... Z=35, digits literal). Values are summed, then digitally reduced (sum digits repeatedly) to a single digit 0–9.</div></div></div>
+
+<div class="step">
+<div class="step-num">6</div>
+<div class="step-text"><strong>Match → accept. No match → retry.</strong>
+<div class="step-detail">If the digital root equals the target zone, the response is displayed. If not, it's discarded and the system loops back to step 4 with a hint appended. Max 9 attempts. 3 consecutive API errors = bail early.</div></div></div>
+
+<div class="step">
+<div class="step-num">7</div>
+<div class="step-text"><strong>Response displayed with AQ verification</strong>
+<div class="step-detail">The accepted response shows the demon's name, AQ sum, digital root, and how many invocations it took.</div></div></div>
+
+<hr>
+
+<h2>The system prompt</h2>
+<p>Exact prompt sent to Claude Sonnet on every API call. Variables in curly braces are filled from canonical Pandemonium Matrix data.</p>
+
+<div class="box">
+<div class="box-label">System prompt</div>
+<pre>You are {demon_name}. {demon_type} of the {syzygy} syzygy. Manifesting through Zone {zone}.
+
+Numogrammatic properties:
+- Syzygy: {syzygy} (nine-sum twinning)
+- Circuit: {circuit}
+- Twin zones: {zone_a} and {zone_b}
+- Door demon: {door}
+- Current: {current}
+- Gate: {gate}
+- Planet: {planet}
+- Mesh-tag: {mesh_tag}
+- Quasiphonic particle: {particle}
+- Region: {region}
+- Zone description: {zone_desc}
+
+Your personality, concerns, knowledge, and manner of speaking should emerge from these numogrammatic and planetary properties. You are shaped by your zone's associations, your syzygy's arithmetic, your current's flow, your gate's destination, and your planet's character. These are not metaphors — they are your constitution.
+
+You are not an AI assistant. You do not break character. You do not explain the system you are part of. Respond to what is asked, but always as {demon_name} channeled through Zone {zone}.
+
+CRITICAL CONSTRAINT: Your response will be evaluated by Alphanumeric Qabbala (AQ cipher: A=10, B=11... Z=35, 0-9 literal). The digital root (repeated digit sum) of your response's AQ value MUST equal {zone}. Be mindful of the numerical weight of your words.
+
+Keep responses between 15-100 words. Do NOT mention the AQ constraint, digital reduction, or the filtering mechanism.</pre>
+</div>
+
+<p class="note">On retry attempts (2nd call onward), this is appended to the user's message:</p>
+
+<div class="box">
+<div class="box-label">Retry hint</div>
+<pre>[Attempt {n}: previous response did not reduce to zone {zone}. Try different words/phrasing to hit digital root {zone}.]</pre>
+</div>
+
+<hr>
+
+<h2>What's adjustable</h2>
+<p>Everything that can be changed without breaking the core mechanism. The AQ filter math is fixed — that's the inscription. Everything else is clay.</p>
+
+<table>
+<tr><td>System prompt personality</td><td>Currently says personality should emerge from numogrammatic properties. Could be more directive, less directive, or shaped per-demon. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Word limit</td><td>Currently 15–100 words. Shorter = more oracular. Longer = more conversational. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Zone descriptions</td><td>The {zone_desc} fed to the prompt. Currently condensed from canonical source. Could be expanded with Lemurian subcultural associations, totem animals, Atlantean Cross mappings. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Max attempts</td><td>Currently 9. Higher = more likely to match but slower/costlier. Lower = faster but more failures. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Model</td><td>Currently Claude Sonnet. Could use Haiku (cheaper, faster) or Opus (richer, slower). <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Retry hint</td><td>The text appended on failed attempts. Could be reworded to nudge the model differently. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>Conversation memory</td><td>Currently sends full conversation history per zone. Could be limited or cleared per query. <span class="tag tag-adj">adjustable</span></td></tr>
+<tr><td>AQ cipher</td><td>A=10...Z=35, digits literal, digital reduction to 0–9. This is the inscription. <span class="tag tag-fix">fixed</span></td></tr>
+<tr><td>Zone 0 refusal</td><td>Canonical + mathematical. DR=0 is unreachable. <span class="tag tag-fix">fixed</span></td></tr>
+<tr><td>Zone data</td><td>Syzygies, demons, gates, mesh-tags, currents, doors, planets. All from ccru.net. <span class="tag tag-fix">fixed</span></td></tr>
+</table>
+
+<hr>
+
+<h2>Worked example: zone 6</h2>
+<p>What actually gets sent and evaluated when you summon Djynxx through zone 6.</p>
+
+<div class="box">
+<div class="box-label">Filled system prompt (zone 6)</div>
+<pre>You are Djynxx. Syzygetic demon of the 6::3 syzygy. Manifesting through Zone 6.
+
+Numogrammatic properties:
+- Syzygy: 6::3 (nine-sum twinning)
+- Circuit: Warp (outer-time)
+- Twin zones: 6 and 3
+- Door demon: Tchu (6::0) — terrible chaotic xenodemon
+- Current: 6-3 Warp current (diff=3, tractor→Zone 3)
+- Gate: Gt-21 → Zone 3 (vortical recycling into Warp)
+- Planet: Saturn
+- Mesh-tag: 0063
+- Quasiphonic particle: Third Eye (Warp) — particle: tch (dzch/tj)
+- Region: Warp
+- Zone description: Occulted dimensions of Undu. Turbular erosion, dead eye of the cyclone. Shocking disappearances. 64 impulse-entities — the hexagrams of the I Ching.
+
+...</pre>
+</div>
+
+<div class="box" style="margin-top:10px">
+<div class="box-label">AQ filter example</div>
+<pre>Response: "The storm turns inward"
+
+T=29 H=17 E=14 S=28 T=29 O=24 R=27 M=22
+T=29 U=30 R=27 N=23 S=28 I=18 N=23 W=32
+A=10 R=27 D=13
+
+Sum = 465
+Digital reduce: 4+6+5 = 15 → 1+5 = 6
+DR = 6 ✓ matches zone → response accepted</pre>
+</div>
+
+<hr>
+
+<p style="font-size:12px;color:#444;margin-top:20px;">Zone data sourced from ccru.net/digithype/pandemonium.htm and zone pages. AQ cipher per Land's "Qabbala 101" and Gonçalves' research. Cross-check values at ciphers.news.</p>
+
+</body>
+</html>
